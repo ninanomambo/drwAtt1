@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2196F3">
+    <title>Attendance Tracker</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Attendance Tracker</h1>
+            <div class="status-indicator">
+                <span id="connectionStatus" class="status-dot offline"></span>
+                <span id="statusText">Offline</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="current-status">
+                <div id="currentStatusCard" class="status-card">
+                    <h2 id="statusTitle">Ready to Check In</h2>
+                    <p id="statusTime"></p>
+                    <p id="statusLocation"></p>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="checkInBtn" class="btn btn-primary">
+                    <span class="btn-icon">🟢</span>
+                    Check In
+                </button>
+                <button id="checkOutBtn" class="btn btn-secondary" disabled>
+                    <span class="btn-icon">🔴</span>
+                    Check Out
+                </button>
+            </div>
+
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <h3>Today's Hours</h3>
+                    <p id="todayHours">0h 0m</p>
+                </div>
+                <div class="stat-card">
+                    <h3>This Week</h3>
+                    <p id="weekHours">0h 0m</p>
+                </div>
+            </div>
+
+            <div class="history-section">
+                <div class="section-header">
+                    <h2>Recent Activity</h2>
+                    <button id="viewAllBtn" class="btn-link">View All</button>
+                </div>
+                <div id="recentEntries" class="entries-list">
+                    <p class="empty-state">No entries yet. Check in to get started!</p>
+                </div>
+            </div>
+        </main>
+
+        <div id="historyModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Attendance History</h2>
+                    <button id="closeModal" class="btn-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="date-filter">
+                        <input type="date" id="startDate" class="date-input">
+                        <span>to</span>
+                        <input type="date" id="endDate" class="date-input">
+                        <button id="filterBtn" class="btn btn-small">Filter</button>
+                    </div>
+                    <div id="allEntries" class="entries-list">
+                        <p class="empty-state">No entries found.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="notification" class="notification">
+            <span id="notificationMessage"></span>
+            <button id="closeNotification">&times;</button>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/location.js"></script>
+    <script src="js/sync.js"></script>
+    <script src="js/app.js"></script>
+    
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => console.log('SW registered'))
+                    .catch(error => console.log('SW registration failed'));
+            });
+        }
+    </script>
+</body>
+</html>
